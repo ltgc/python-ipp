@@ -347,7 +347,7 @@ class IPP:
 
         return printer
 
-    async def __aenter__(self) -> IPP:   # noqa: PYI034
+    async def __aenter__(self) -> IPP:  # noqa: PYI034
         """Async enter."""
         return self
 
