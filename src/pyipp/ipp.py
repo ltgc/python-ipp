@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import asyncio
+import sys
 from dataclasses import dataclass
 from importlib import metadata
 from socket import gaierror
@@ -9,7 +10,6 @@ from struct import error as structerror
 from typing import TYPE_CHECKING, Any
 
 import aiohttp
-import async_timeout
 from deepmerge import always_merger
 from yarl import URL
 
@@ -34,6 +34,11 @@ from .serializer import encode_dict
 
 if TYPE_CHECKING:
     from collections.abc import Mapping
+
+if sys.version_info >= (3, 11):
+    from asyncio import timeout
+else:
+    from async_timeout import timeout
 
 VERSION = metadata.version(__package__)
 
@@ -112,7 +117,7 @@ class IPP:
             data = encode_dict(data, doc=doc)
 
         try:
-            async with async_timeout.timeout(self.request_timeout):
+            async with timeout(self.request_timeout):
                 response = await self.session.request(
                     method,
                     url,
@@ -196,7 +201,7 @@ class IPP:
         if parsed["status-code"] == IppStatus.ERROR_VERSION_NOT_SUPPORTED:
             raise IPPVersionNotSupportedError("IPP version not supported by server")
 
-        if parsed["status-code"] not in range(0, 0x200):
+        if parsed["status-code"] not in range(0x200):
             raise IPPError(
                 "Unexpected printer status code",
                 {
@@ -342,10 +347,10 @@ class IPP:
 
         return printer
 
-    async def __aenter__(self) -> IPP:
+    async def __aenter__(self) -> IPP:   # noqa: PYI034
         """Async enter."""
         return self
 
-    async def __aexit__(self, *_exec_info: Any) -> None:
+    async def __aexit__(self, *_exec_info: object) -> None:
         """Async exit."""
         await self.close()
