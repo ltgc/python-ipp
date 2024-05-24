@@ -49,6 +49,8 @@ DEFAULT_PRINTER_ATTRIBUTES = [
     "pwg-raster-document-type-supported",
     "media-supported",
     "compression-supported",
+    "sides-default",
+    "sides-supported",
 ]
 
 DEFAULT_PORT = 631

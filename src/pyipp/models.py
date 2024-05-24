@@ -37,6 +37,8 @@ class Info:
     raster_document_type_supported: list[str] | None = None
     media_supported: list[str] | None = None
     compression_supported: list[str] | None = None
+    sides_default: str | None = None
+    sides_supported: list[str] | None = None
 
     @staticmethod
     def from_dict(data: dict[str, Any]) -> Info:
@@ -108,6 +110,8 @@ class Info:
             ),
             media_supported=data.get("media-supported", None),
             compression_supported=data.get("compression-supported", None),
+            sides_default=data.get("sides-default", None),
+            sides_supported=data.get("sides-supported", None),
         )
 
     @property
