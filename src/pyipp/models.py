@@ -176,7 +176,9 @@ class Printer:
     uris: list[Uri]
 
     def __hash__(self):
-        return hash(self.info.printer_name)
+        ip = self.uris[0].parsed_uri.hostname
+        name = self.info.name
+        return hash(f"{ip}-{name}")
 
     def __eq__(self, other):
         return hash(self.info.printer_name) == hash(other.info.printer_name)

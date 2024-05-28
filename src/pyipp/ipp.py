@@ -218,6 +218,7 @@ class IPP:
         filename: str,
         document_format: str = "application/octet-stream",
         copies: int = 1,
+        sides: str = "one-sided",
     ):
         """Print a document."""
         response_data = await self.execute(
@@ -229,6 +230,7 @@ class IPP:
                 },
                 "job-attributes-tag": {
                     "copies": copies,
+                    "sides": sides,
                 },
             },
             doc=document,
