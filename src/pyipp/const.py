@@ -51,6 +51,13 @@ DEFAULT_PRINTER_ATTRIBUTES = [
     "compression-supported",
     "sides-default",
     "sides-supported",
+    "print-quality-default",
+    "finishings-default",
+    "orientation-requested-default",
+    "print-quality-supported",
+    "finishings-supported",
+    "orientation-requested-supported",
+    "operations-supported",
 ]
 
 DEFAULT_PORT = 631

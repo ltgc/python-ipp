@@ -9,8 +9,13 @@ from urllib.parse import urlparse, ParseResult
 from yarl import URL
 
 from .parser import parse_ieee1284_device_id, parse_make_and_model
+from .enums import IppOperation
 
 PRINTER_STATES = {3: "idle", 4: "printing", 5: "stopped"}
+
+def _parse_operations_supported(ops_supported: list[int] = []) -> list[str]:
+    """Return operations supported from IPP response."""
+    return [IppOperation(ops) for ops in ops_supported]
 
 
 @dataclass
@@ -39,6 +44,13 @@ class Info:
     compression_supported: list[str] | None = None
     sides_default: str | None = None
     sides_supported: list[str] | None = None
+    print_quality_default: str | None = None
+    print_quality_supported: str | None = None
+    finishings_default: str | None = None
+    finishings_supported: str | None = None
+    orientation_requested_default: str | None = None
+    orientation_requested_supported: str | None = None
+    operations_supported: list[str] | None = None
 
     @staticmethod
     def from_dict(data: dict[str, Any]) -> Info:
@@ -112,6 +124,13 @@ class Info:
             compression_supported=data.get("compression-supported", None),
             sides_default=data.get("sides-default", None),
             sides_supported=data.get("sides-supported", None),
+            print_quality_default=data.get("print-quality-default", None),
+            print_quality_supported=data.get("print-quality-supported", None),
+            finishings_default=data.get("finishings-default", None),
+            finishings_supported=data.get("finishings-supported", None),            
+            orientation_requested_default=data.get("orientation-requested-default", None),
+            orientation_requested_supported=data.get("orientation-requested-supported", None),
+            operations_supported=_parse_operations_supported(data.get("operations-supported", None)),
         )
 
     @property

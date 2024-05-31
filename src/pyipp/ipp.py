@@ -303,6 +303,25 @@ class IPP:
         )
 
         return response_data["jobs"]
+    
+    async def cancel_job(
+        self,
+        job_id: int,
+        job_uri: str,
+        printer_uri: str,
+    ) -> list[dict[str, Any]]:
+        """Cancell a print job."""
+        response_data = await self.execute(
+            IppOperation.CANCEL_JOB,
+            {
+                "operation-attributes-tag": {
+                    "job-id": job_id,
+                    "printer-uri": printer_uri,
+                },
+            },
+        )
+
+        return response_data["jobs"]
 
     async def get_printer_attributes(
         self,
