@@ -13,7 +13,7 @@ from .enums import IppOperation
 
 PRINTER_STATES = {3: "idle", 4: "printing", 5: "stopped"}
 
-def _parse_operations_supported(ops_supported: list[int] = []) -> list[str]:
+def _parse_operations_supported(ops_supported: list[int] = []) -> list[IppOperation]:
     """Return operations supported from IPP response."""
     return [IppOperation(ops) for ops in ops_supported]
 
@@ -50,7 +50,7 @@ class Info:
     finishings_supported: str | None = None
     orientation_requested_default: str | None = None
     orientation_requested_supported: str | None = None
-    operations_supported: list[str] | None = None
+    operations_supported: list[IppOperation] | None = None
 
     @staticmethod
     def from_dict(data: dict[str, Any]) -> Info:
@@ -127,7 +127,7 @@ class Info:
             print_quality_default=data.get("print-quality-default", None),
             print_quality_supported=data.get("print-quality-supported", None),
             finishings_default=data.get("finishings-default", None),
-            finishings_supported=data.get("finishings-supported", None),            
+            finishings_supported=data.get("finishings-supported", None),
             orientation_requested_default=data.get("orientation-requested-default", None),
             orientation_requested_supported=data.get("orientation-requested-supported", None),
             operations_supported=_parse_operations_supported(data.get("operations-supported", None)),
