@@ -216,9 +216,10 @@ class IPP:
         self,
         document: bytes,
         filename: str,
+        sides: str,
         document_format: str = "application/octet-stream",
         copies: int = 1,
-        sides: str = "one-sided",
+        fidelity: bool = False,
     ):
         """Print a document."""
         response_data = await self.execute(
@@ -227,6 +228,7 @@ class IPP:
                 "operation-attributes-tag": {
                     "job-name": filename,
                     "document-format": document_format,
+                    "ipp-attribute-fidelity": fidelity,
                 },
                 "job-attributes-tag": {
                     "copies": copies,
@@ -241,7 +243,10 @@ class IPP:
     async def validate_job(
         self,
         filename: str,
+        sides: str,
         document_format: str = "application/octet-stream",
+        copies: int = 1,
+        fidelity: bool = False,
     ):
         """Validate that the printer can accept this job."""
         response_data = await self.execute(
@@ -250,6 +255,11 @@ class IPP:
                 "operation-attributes-tag": {
                     "job-name": filename,
                     "document-format": document_format,
+                    "ipp-attribute-fidelity": fidelity,
+                },
+                "job-attributes-tag": {
+                    "copies": copies,
+                    "sides": sides,
                 },
             },
         )
@@ -303,7 +313,7 @@ class IPP:
         )
 
         return response_data["jobs"]
-    
+
     async def cancel_job(
         self,
         job_id: int,
