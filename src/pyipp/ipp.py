@@ -203,10 +203,10 @@ class IPP:
 
         if parsed["status-code"] not in range(0x200):
             raise IPPError(
-                "Unexpected printer status code",
+                "There has been an error",
                 {
                     "status-code": parsed["status-code"],
-                    "status": IppStatus(parsed["status-code"]),
+                    "status": IppStatus(parsed["status-code"]).name,
                 },
             )
 
