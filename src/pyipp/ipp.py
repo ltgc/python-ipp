@@ -131,7 +131,7 @@ class IPP:
                 )
         except asyncio.TimeoutError as exc:
             raise IPPConnectionError(
-                "Timeout occurred while connecting to IPP server.",
+                f"Timeout occurred while connecting to IPP server {self.host}.",
             ) from exc
         except (aiohttp.ClientError, gaierror) as exc:
             raise IPPConnectionError(
