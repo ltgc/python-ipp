@@ -57,9 +57,11 @@ class IPP:
     username: str | None = None
     verify_ssl: bool = False
     user_agent: str | None = None
+    ipp_version: tuple[int, int] = DEFAULT_PROTO_VERSION
 
     _close_session: bool = False
     _printer_uri: str = ""
+    _printer: Printer | None = None
 
     def __post_init__(self) -> None:
         """Initialize connection parameters."""
@@ -73,7 +75,7 @@ class IPP:
             if printer_uri.port is not None:
                 self.port = printer_uri.port
 
-            self.tls = printer_uri.scheme == "ipps"
+            self.tls = printer_uri.scheme == "ipps"  # pylint: disable=W0143
             self.base_path = printer_uri.path
         else:
             self._printer_uri = self._build_printer_uri()
@@ -170,7 +172,7 @@ class IPP:
     def _message(self, operation: IppOperation, msg: dict[str, Any]) -> dict[str, Any]:
         """Build a request message to be sent to the server."""
         base = {
-            "version": DEFAULT_PROTO_VERSION,
+            "version": self.ipp_version,
             "operation": operation,
             "request-id": None,  # will get added by serializer if one isn't given
             "operation-attributes-tag": {  # these are required to be in this order
@@ -181,7 +183,7 @@ class IPP:
             },
         }
 
-        return always_merger.merge(base, msg)  # type: ignore  # noqa: PGH003
+        return always_merger.merge(base, msg)
 
     async def execute(
         self,
@@ -371,12 +373,15 @@ class IPP:
         parsed: dict[str, Any] = next(iter(response_data["printers"] or []), {})
 
         try:
-            printer = Printer.from_dict(parsed)
+            if self._printer is None:
+                self._printer = Printer.from_dict(parsed)
+            else:
+                self._printer.update_from_dict(parsed)
         except Exception as exc:  # noqa: BLE001
             print("Error parsing printer response", exc)
             raise IPPParseError from exc
 
-        return printer
+        return self._printer
 
     async def __aenter__(self) -> IPP:  # noqa: PYI034
         """Async enter."""

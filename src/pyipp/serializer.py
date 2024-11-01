@@ -95,5 +95,8 @@ def encode_dict(data: dict[str, Any], doc: bytes | None = None) -> bytes:
 
     if doc:
         encoded += doc
+    elif "data" in data:
+        encoded += data["data"]
+
 
     return encoded

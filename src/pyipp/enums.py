@@ -285,18 +285,18 @@ class IppFinishing(IntEnum):
     BIND = 0x0007
     SADDLE_STITCH = 0x0008
     EDGE_STITCH = 0x0009
-    STAPLE_TOP_LEFT = 0x0020
-    STAPLE_BOTTOM_LEFT = 0x0021
-    STAPLE_TOP_RIGHT = 0x0022
-    STAPLE_BOTTOM_RIGHT = 0x0023
-    EDGE_STITCH_LEFT = 0x0024
-    EDGE_STITCH_TOP = 0x0025
-    EDGE_STITCH_RIGHT = 0x0026
-    EDGE_STITCH_BOTTOM = 0x0027
-    STAPLE_DUAL_LEFT = 0x0028
-    STAPLE_DUAL_TOP = 0x0029
-    STAPLE_DUAL_RIGHT = 0x0030
-    STAPLE_DUAL_BOTTOM = 0x0031
+    STAPLE_TOP_LEFT = 0x0014
+    STAPLE_BOTTOM_LEFT = 0x0015
+    STAPLE_TOP_RIGHT = 0x0016
+    STAPLE_BOTTOM_RIGHT = 0x0017
+    EDGE_STITCH_LEFT = 0x0018
+    EDGE_STITCH_TOP = 0x0019
+    EDGE_STITCH_RIGHT = 0x001A
+    EDGE_STITCH_BOTTOM = 0x001B
+    STAPLE_DUAL_LEFT = 0x001C
+    STAPLE_DUAL_TOP = 0x001D
+    STAPLE_DUAL_RIGHT = 0x001E
+    STAPLE_DUAL_BOTTOM = 0x001F
 
 
 class IppPrintQuality(IntEnum):
@@ -317,11 +317,19 @@ class IppOrientationRequested(IntEnum):
 
 
 ATTRIBUTE_ENUM_MAP = {
-    "document-state": IppDocumentState,
-    "finishings": IppFinishing,
-    "job-state": IppJobState,
-    "orientation-requested": IppOrientationRequested,
-    "printer-state": IppPrinterState,
-    "print-quality": IppPrintQuality,
-    "status-code": IppStatus,
+    "document-state": IppDocumentState, # PWG5100.5
+    "finishings": IppFinishing, # RFC8011
+    "finishings-default": IppFinishing, # RFC8011
+    "finishings-supported": IppFinishing, # RFC8011
+    "job-state": IppJobState, # RFC8011
+    "media-source-feed-orientation": IppOrientationRequested, # PWG5100.7
+    "operations-supported": IppOperation, # RFC8011
+    "orientation-requested": IppOrientationRequested, # RFC8011
+    "orientation-requested-default": IppOrientationRequested, # RFC8011
+    "orientation-requested-supported": IppOrientationRequested, # RFC8011
+    "printer-state": IppPrinterState, # RFC8011
+    "print-quality": IppPrintQuality, # RFC8011
+    "print-quality-default": IppPrintQuality, # RFC8011
+    "print-quality-supported": IppPrintQuality, # RFC8011
+    "status-code": IppStatus, # RFC8011
 }
