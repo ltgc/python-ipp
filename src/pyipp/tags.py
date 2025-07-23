@@ -1,4 +1,5 @@
 """Attribute Tags for IPP."""
+
 from .enums import IppTag
 
 ATTRIBUTE_TAG_MAP = {
@@ -33,7 +34,6 @@ ATTRIBUTE_TAG_MAP = {
     "member-uris": IppTag.URI,
     "operations-supported": IppTag.ENUM,
     "ppd-name": IppTag.NAME,
-    "printer-state-reason": IppTag.KEYWORD,
     "printer-is-shared": IppTag.BOOLEAN,
     "printer-error-policy": IppTag.NAME,
     "printer-geo-location": IppTag.URI,
