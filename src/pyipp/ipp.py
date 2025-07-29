@@ -222,12 +222,14 @@ class IPP:
         document_format: str = "application/octet-stream",
         copies: int = 1,
         fidelity: bool = False,
+        username: str = None,
     ):
         """Print a document."""
         response_data = await self.execute(
             IppOperation.PRINT_JOB,
             {
                 "operation-attributes-tag": {
+                    "requesting-user-name": username or "PythonIPP",
                     "job-name": filename,
                     "document-format": document_format,
                     "ipp-attribute-fidelity": fidelity,
