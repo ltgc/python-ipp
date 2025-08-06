@@ -1,4 +1,5 @@
 """Asynchronous Python client for IPP."""
+
 from __future__ import annotations
 
 import asyncio
@@ -179,11 +180,12 @@ class IPP:
                 "attributes-charset": DEFAULT_CHARSET,
                 "attributes-natural-language": DEFAULT_CHARSET_LANGUAGE,
                 "printer-uri": self._printer_uri,
-                "requesting-user-name": "PythonIPP",
             },
         }
 
-        return always_merger.merge(base, msg)
+        base = always_merger.merge(base, msg)
+        base["operation-attributes-tag"]["requesting-user-name"] = "PythonIPP"
+        return base
 
     async def execute(
         self,
@@ -219,25 +221,27 @@ class IPP:
         document: bytes,
         filename: str,
         sides: str,
+        media: str | None = None,
         document_format: str = "application/octet-stream",
         copies: int = 1,
         fidelity: bool = False,
-        username: str = None,
     ):
         """Print a document."""
+        job_attrs = {
+            "copies": copies,
+            "sides": sides,
+        }
+        if media:
+            job_attrs["media"] = media
         response_data = await self.execute(
             IppOperation.PRINT_JOB,
             {
                 "operation-attributes-tag": {
-                    "requesting-user-name": username or "PythonIPP",
                     "job-name": filename,
                     "document-format": document_format,
                     "ipp-attribute-fidelity": fidelity,
                 },
-                "job-attributes-tag": {
-                    "copies": copies,
-                    "sides": sides,
-                },
+                "job-attributes-tag": job_attrs,
             },
             doc=document,
         )
@@ -248,6 +252,7 @@ class IPP:
         self,
         filename: str,
         sides: str,
+        media: str,
         document_format: str = "application/octet-stream",
         copies: int = 1,
         fidelity: bool = False,
@@ -264,6 +269,7 @@ class IPP:
                 "job-attributes-tag": {
                     "copies": copies,
                     "sides": sides,
+                    "media": media,
                 },
             },
         )

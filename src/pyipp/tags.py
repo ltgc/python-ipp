@@ -34,6 +34,7 @@ ATTRIBUTE_TAG_MAP = {
     "member-uris": IppTag.URI,
     "operations-supported": IppTag.ENUM,
     "ppd-name": IppTag.NAME,
+    "printer-state-reason": IppTag.KEYWORD,
     "printer-is-shared": IppTag.BOOLEAN,
     "printer-error-policy": IppTag.NAME,
     "printer-geo-location": IppTag.URI,
@@ -59,7 +60,8 @@ ATTRIBUTE_TAG_MAP = {
     "time-at-creation": IppTag.INTEGER,
     "time-at-processing": IppTag.INTEGER,
     "time-at-completed": IppTag.INTEGER,
-    "media": IppTag.NAME,
+    "media": IppTag.KEYWORD,
     "center-of-pixel": IppTag.BOOLEAN,
     "sides": IppTag.KEYWORD,
+    "media-source": IppTag.KEYWORD,
 }
